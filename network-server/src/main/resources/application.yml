@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: network
+network:
+  server:
+    host: 127.0.0.1
+netty:
+  server:
+    listenPort: 10000
+    serverWorkerThreads: 8
+    serverCallbackExecutorThreads: 0
+    serverSelectorThreads: 3
+    serverOnewaySemaphoreValue: 256
+    serverAsyncSemaphoreValue: 64
+    serverChannelMaxIdleTimeSeconds: 10
+    serverSocketSndBufSize: 65535
+    serverSocketRcvBufSize: 65535
+    serverPooledByteBufAllocatorEnable: true
+    useEpollNativeSelector: false
+  client:
+    clientWorkerThreads: 4
+    clientOnewaySemaphoreValue: 65535
+    clientAsyncSemaphoreValue: 65535
+    connectTimeoutMillis: 3000
+    channelNotActiveInterval: 60000
+    clientChannelMaxIdleTimeSeconds: 120
+    clientSocketSndBufSize: 65535
+    clientSocketRcvBufSize: 65535
+    clientPooledByteBufAllocatorEnable: true
+    clientCloseSocketIfTimeout: true
+    useTLS: false
+
+
+
+
+
+
+
