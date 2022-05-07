@@ -2,7 +2,6 @@ package com.alishangtian.network.client.config;
 
 import com.alishangtian.network.common.config.ClientConfig;
 import com.alishangtian.network.config.NettyClientConfig;
-import com.alishangtian.network.config.NettyServerConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @Author maoxiaobing
  **/
 @Configuration
-public class ServerConfiguration {
+public class ClientConfiguration {
 
     @ConfigurationProperties(prefix = "netty.client")
     @Bean

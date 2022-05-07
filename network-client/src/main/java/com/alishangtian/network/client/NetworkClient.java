@@ -90,7 +90,7 @@ public class NetworkClient {
         if (null != connectFuture.getRemotingConnectException()) {
             throw connectFuture.getRemotingConnectException();
         }
-        log.info("connect broker {} success", host);
+        log.info("connect server {} success", host);
     }
 
     public boolean isConnected(String host) {

@@ -1,23 +1,24 @@
 package com.alishangtian.network.server;
 
 import com.alishangtian.network.common.NetworkHelper;
-import com.alishangtian.network.common.NetworkUtil;
 import com.alishangtian.network.common.RequestCode;
 import com.alishangtian.network.common.config.ServerConfig;
 import com.alishangtian.network.config.NettyServerConfig;
 import com.alishangtian.network.netty.NettyRemotingServer;
 import com.alishangtian.network.protocol.HeartBeatLoad;
+import com.alishangtian.network.server.constants.Animals;
 import com.alishangtian.network.server.processor.ClientHeartBeatProcessor;
 import com.alishangtian.network.server.processor.ServerChannelProcessor;
 import com.alishangtian.network.util.JSONUtils;
 import io.netty.channel.Channel;
-import io.netty.handler.codec.redis.RedisEncoder;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -45,6 +46,13 @@ public class NetworkServer {
     private static final int MIN_SCHEDULE_WORKER_THREAD_COUNT = 4;
     private final Map<String, HashMap<String, Channel>> clients = new HashMap<>();
     private final ReentrantLock clientsLock = new ReentrantLock();
+    private final List<String> animals = new ArrayList<String>() {{
+        add(Animals.dog);
+        add(Animals.pig);
+        add(Animals.dolphin);
+        add(Animals.lion);
+        add(Animals.tiger);
+    }};
     /**
      * 本机地址
      */
@@ -79,6 +87,7 @@ public class NetworkServer {
         server = new NettyRemotingServer(nettyServerConfig, serverChannelProcessor);
         server.registerProcessor(RequestCode.CLIENT_HEART_BEAT, new ClientHeartBeatProcessor(this), executorService);
         server.start();
+        scheduledThreadPoolExecutor.scheduleAtFixedRate(() -> randomAnimal(), 5000L, 1000L, TimeUnit.MILLISECONDS);
     }
 
     public void addChannelGroup(Channel channel, HeartBeatLoad heartBeatLoad) {
@@ -98,6 +107,12 @@ public class NetworkServer {
         } finally {
             clientsLock.unlock();
         }
+    }
+
+    private void randomAnimal() {
+        Long animalIndex = System.currentTimeMillis() % animals.size();
+        String animal = animals.get(animalIndex.intValue());
+        System.out.println(animal);
     }
 
 }
