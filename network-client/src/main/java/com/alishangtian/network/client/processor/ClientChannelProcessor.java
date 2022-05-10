@@ -1,27 +1,16 @@
 package com.alishangtian.network.client.processor;
 
 import com.alishangtian.network.ChannelEventListener;
-import com.alishangtian.network.NetworkCommand;
-import com.alishangtian.network.common.RemotingCommandResultEnums;
-import com.alishangtian.network.processor.NettyRequestProcessor;
 import com.alishangtian.network.client.NetworkClient;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
-/**
- * @Description ChannelEventService
- * @Date 2020/6/20 下午7:23
- * @Author maoxiaobing
- **/
-@Service
 @Log4j2
-public class ClientChannelProcessor implements ChannelEventListener, NettyRequestProcessor {
+public class ClientChannelProcessor implements ChannelEventListener {
     private Map<String, Channel> activeChannel = new ConcurrentHashMap<>();
     private Map<String, CountDownLatch> countDownLatchMap = new ConcurrentHashMap<>();
     private NetworkClient networkServer;
@@ -46,19 +35,19 @@ public class ClientChannelProcessor implements ChannelEventListener, NettyReques
 
     @Override
     public void onChannelClose(String remoteAddr, Channel channel) {
-//        log.info("channel closed address {}", remoteAddr);
-//        removeChannel(remoteAddr);
+        log.warn("channel close address {}", remoteAddr);
+        removeChannel(remoteAddr);
     }
 
     @Override
     public void onChannelException(String remoteAddr, Channel channel) {
-        log.info("channel exception address {}", remoteAddr);
+        log.error("channel exception address {}", remoteAddr);
         removeChannel(remoteAddr);
     }
 
     @Override
     public void onChannelIdle(String remoteAddr, Channel channel) {
-        log.info("channel idle address {}", remoteAddr);
+        log.error("channel idle address {}", remoteAddr);
         removeChannel(remoteAddr);
     }
 
@@ -75,15 +64,5 @@ public class ClientChannelProcessor implements ChannelEventListener, NettyReques
     @Override
     public Map<String, Channel> getActiveChannel() {
         return this.activeChannel;
-    }
-
-    @Override
-    public NetworkCommand processRequest(ChannelHandlerContext ctx, NetworkCommand request) throws Exception {
-        return NetworkCommand.builder().result(RemotingCommandResultEnums.SUCCESS.getResult()).build();
-    }
-
-    @Override
-    public boolean rejectRequest() {
-        return false;
     }
 }

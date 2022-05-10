@@ -38,11 +38,6 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-/**
- * @Description NettyRemotingServer
- * @Date 2020/6/1 下午8:01
- * @Author maoxiaobing
- **/
 @Slf4j
 public class NettyRemotingServer extends AbstractNettyRemoting implements RemotingServer {
 
@@ -384,21 +379,21 @@ public class NettyRemotingServer extends AbstractNettyRemoting implements Remoti
         @Override
         public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
             final String remoteAddress = NetworkHelper.parseChannelRemoteAddr(ctx.channel());
-            log.info("server >> channelRegistered, the channel [{}]", remoteAddress);
+            log.debug("server >> channelRegistered, the channel [{}]", remoteAddress);
             super.channelRegistered(ctx);
         }
 
         @Override
         public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
             final String remoteAddress = NetworkHelper.parseChannelRemoteAddr(ctx.channel());
-            log.info("server >> channelUnregistered, the channel[{}]", remoteAddress);
+            log.debug("server >> channelUnregistered, the channel[{}]", remoteAddress);
             super.channelUnregistered(ctx);
         }
 
         @Override
         public void channelActive(ChannelHandlerContext ctx) throws Exception {
             final String remoteAddress = NetworkHelper.parseChannelRemoteAddr(ctx.channel());
-            log.info("server >> channelActive, the channel[{}]", remoteAddress);
+            log.debug("server >> channelActive, the channel[{}]", remoteAddress);
             super.channelActive(ctx);
             if (NettyRemotingServer.this.channelEventListener != null) {
                 NettyRemotingServer.this.putNettyEvent(new NettyEvent(NettyEventType.CONNECT, remoteAddress, ctx.channel()));
@@ -408,7 +403,7 @@ public class NettyRemotingServer extends AbstractNettyRemoting implements Remoti
         @Override
         public void channelInactive(ChannelHandlerContext ctx) throws Exception {
             final String remoteAddress = NetworkHelper.parseChannelRemoteAddr(ctx.channel());
-            log.info("server >> channelInactive, the channel[{}]", remoteAddress);
+            log.debug("server >> channelInactive, the channel[{}]", remoteAddress);
             super.channelInactive(ctx);
             if (NettyRemotingServer.this.channelEventListener != null) {
                 NettyRemotingServer.this.putNettyEvent(new NettyEvent(NettyEventType.CLOSE, remoteAddress, ctx.channel()));

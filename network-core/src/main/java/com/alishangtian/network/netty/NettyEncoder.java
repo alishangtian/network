@@ -9,9 +9,6 @@ import io.netty.handler.codec.MessageToByteEncoder;
 
 import java.io.ObjectOutputStream;
 
-/**
- * @author maoxiaobing
- */
 @ChannelHandler.Sharable
 public class NettyEncoder extends MessageToByteEncoder<NetworkCommand> {
     private static final byte[] LENGTH_PLACEHOLDER = new byte[4];

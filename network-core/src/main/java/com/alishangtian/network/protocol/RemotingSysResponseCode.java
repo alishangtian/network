@@ -1,12 +1,5 @@
 package com.alishangtian.network.protocol;
 
-/**
- * @Author maoxiaobing
- * @Description
- * @Date 2020/6/2
- * @Param
- * @Return
- */
 public class RemotingSysResponseCode {
 
     public static final int SUCCESS = 0;

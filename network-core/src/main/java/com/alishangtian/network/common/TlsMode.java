@@ -1,8 +1,5 @@
 package com.alishangtian.network.common;
 
-/**
- * @author alishangtian
- */
 public enum TlsMode {
     /**
      * 关闭

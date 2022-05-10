@@ -6,11 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @Description ServerConfiguration
- * @Date 2020/6/2 下午7:08
- * @Author maoxiaobing
- **/
 @Configuration
 public class ClientConfiguration {
 

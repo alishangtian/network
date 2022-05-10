@@ -11,13 +11,7 @@ import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicLong;
 
-/**
- * 请求封装类
- *
- * @Description XtimerCommand
- * @Date 2020/6/2 上午9:45
- * @Author maoxiaobing
- **/
+
 @Data
 @Builder
 public class NetworkCommand implements Serializable {

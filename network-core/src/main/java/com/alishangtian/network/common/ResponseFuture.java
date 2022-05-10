@@ -8,13 +8,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * @Author maoxiaobing
- * @Description
- * @Date 2020/6/2
- * @Param
- * @Return
- */
+
 public class ResponseFuture {
     private final long opaque;
     private final Channel processChannel;

@@ -10,11 +10,7 @@ import io.netty.channel.Channel;
 
 import java.util.concurrent.ExecutorService;
 
-/**
- * @Description RemotingServer
- * @Date 2020/6/1 下午8:03
- * @Author maoxiaobing
- **/
+
 public interface RemotingServer extends RemotingService {
     void registerProcessor(final int requestCode, final NettyRequestProcessor processor,
                            final ExecutorService executor);

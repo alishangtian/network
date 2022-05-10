@@ -14,11 +14,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
-/**
- * @Description ChannelEventService
- * @Date 2020/6/20 下午7:23
- * @Author maoxiaobing
- **/
 @Service
 @Log4j2
 public class ClientChannelProcessor implements ChannelEventListener, NettyRequestProcessor {

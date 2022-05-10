@@ -10,11 +10,7 @@ import com.alishangtian.network.processor.NettyRequestProcessor;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-/**
- * @Description RemotingClient
- * @Date 2020/6/1 下午8:44
- * @Author maoxiaobing
- **/
+
 public interface RemotingClient extends RemotingService {
     void updateNameServerAddressList(final List<String> addrs);
 

@@ -1,22 +1,32 @@
 package com.alishangtian.network.server;
 
+import com.alishangtian.network.NetworkCommand;
 import com.alishangtian.network.common.NetworkHelper;
 import com.alishangtian.network.common.RequestCode;
 import com.alishangtian.network.common.config.ServerConfig;
 import com.alishangtian.network.config.NettyServerConfig;
+import com.alishangtian.network.exception.RemotingSendRequestException;
+import com.alishangtian.network.exception.RemotingTimeoutException;
 import com.alishangtian.network.netty.NettyRemotingServer;
 import com.alishangtian.network.protocol.HeartBeatLoad;
+import com.alishangtian.network.protocol.TaskLoad;
 import com.alishangtian.network.server.constants.Animals;
 import com.alishangtian.network.server.processor.ClientHeartBeatProcessor;
+import com.alishangtian.network.server.processor.ClientSendTaskResultProcessor;
 import com.alishangtian.network.server.processor.ServerChannelProcessor;
 import com.alishangtian.network.util.JSONUtils;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import io.netty.channel.Channel;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.util.resources.ga.LocaleNames_ga;
 
 import javax.annotation.PostConstruct;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +54,10 @@ public class NetworkServer {
     private static final int MAX_SIZE = CORE_SIZE + 4;
     private static final int MIN_WORKER_THREAD_COUNT = 8;
     private static final int MIN_SCHEDULE_WORKER_THREAD_COUNT = 4;
-    private final Map<String, HashMap<String, Channel>> clients = new HashMap<>();
+    /**
+     * 注册到此server上的客户端
+     */
+    private final ConcurrentHashMap<String, ConcurrentHashMap<String, Channel>> clients = new ConcurrentHashMap<>();
     private final ReentrantLock clientsLock = new ReentrantLock();
     private final List<String> animals = new ArrayList<String>() {{
         add(Animals.dog);
@@ -86,16 +99,18 @@ public class NetworkServer {
         serverChannelProcessor = new ServerChannelProcessor(this);
         server = new NettyRemotingServer(nettyServerConfig, serverChannelProcessor);
         server.registerProcessor(RequestCode.CLIENT_HEART_BEAT, new ClientHeartBeatProcessor(this), executorService);
+        server.registerProcessor(RequestCode.CLIENT_PUSH_TASK_RESULT, new ClientSendTaskResultProcessor(this), executorService);
         server.start();
-        scheduledThreadPoolExecutor.scheduleAtFixedRate(() -> randomAnimal(), 5000L, 1000L, TimeUnit.MILLISECONDS);
+        scheduledThreadPoolExecutor.scheduleAtFixedRate(() -> randomAnimal(), 5000L, 100000L, TimeUnit.MILLISECONDS);
+        scheduledThreadPoolExecutor.scheduleAtFixedRate(() -> pushTasks(), 20000L, 60000L, TimeUnit.MILLISECONDS);
     }
 
     public void addChannelGroup(Channel channel, HeartBeatLoad heartBeatLoad) {
         clientsLock.lock();
         try {
-            HashMap<String, Channel> channels = clients.get(heartBeatLoad.getGroup());
+            ConcurrentHashMap<String, Channel> channels = clients.get(heartBeatLoad.getGroup());
             if (null == channels) {
-                channels = new HashMap<>();
+                channels = new ConcurrentHashMap<>();
                 clients.put(heartBeatLoad.getGroup(), channels);
             }
             String remoteAddress = NetworkHelper.parseChannelRemoteAddr(channel);
@@ -103,10 +118,18 @@ public class NetworkServer {
             if (null == channel1 || !channel1.isActive()) {
                 channels.put(remoteAddress, channel);
             }
-            log.info("clients {}", JSONUtils.toJSONString(clients));
         } finally {
             clientsLock.unlock();
         }
+    }
+
+    /**
+     * 接收任务结果
+     *
+     * @param load
+     */
+    public void acceptResult(TaskLoad load) {
+        log.info("task result is {}", JSONUtils.toJSONString(load));
     }
 
     private void randomAnimal() {
@@ -115,4 +138,40 @@ public class NetworkServer {
         System.out.println(animal);
     }
 
+    private void pushTasks() {
+        long stmp = System.currentTimeMillis();
+        TaskLoad load = TaskLoad.builder()
+                .pluginName("plugin_" + stmp)
+                .params("" + stmp)
+                .taskId("task_" + stmp)
+                .groupName("default")
+                .callbackAddress(hostAddress)
+                .build();
+        NetworkCommand networkCommand = NetworkCommand.builder()
+                .code(RequestCode.SERVER_PUSH_TASK)
+                .load(JSONUtils.toJSONString(load).getBytes(StandardCharsets.UTF_8))
+                .build();
+        ConcurrentHashMap<String, Channel> groupClients = this.clients.get(load.getGroupName());
+        if (groupClients.isEmpty()) {
+            log.info("no client for group {}", load.getGroupName());
+            return;
+        }
+        List<Channel> channels = new ArrayList<>(groupClients.values());
+        Collections.shuffle(channels);
+        Channel channel = channels.stream().findFirst().get();
+        try {
+            NetworkCommand result = this.server.invokeSync(channel, networkCommand, 5000L);
+            if (result.isSuccess()) {
+                log.info("push task success to {}", NetworkHelper.parseChannelRemoteAddr(channel));
+                return;
+            }
+            log.error("push task error to {}", NetworkHelper.parseChannelRemoteAddr(channel));
+        } catch (InterruptedException e) {
+            log.error("pushTasks error {}", e.getMessage(), e);
+        } catch (RemotingSendRequestException e) {
+            log.error("pushTasks error {}", e.getMessage(), e);
+        } catch (RemotingTimeoutException e) {
+            log.error("pushTasks error {}", e.getMessage(), e);
+        }
+    }
 }

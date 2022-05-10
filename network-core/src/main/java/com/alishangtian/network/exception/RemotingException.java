@@ -1,12 +1,6 @@
 package com.alishangtian.network.exception;
 
-/** 
- * @Author maoxiaobing
- * @Description
- * @Date 2020/6/2
- * @Param 
- * @Return 
- */
+
 public class RemotingException extends Exception {
 
     public RemotingException(String message) {

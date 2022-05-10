@@ -4,11 +4,7 @@ import io.netty.handler.codec.serialization.ClassResolver;
 
 import java.io.*;
 
-/**
- * @Description CompactObjectInputStream
- * @Date 2020/6/4 上午9:21
- * @Author maoxiaobing
- **/
+
 class CompactObjectInputStream extends ObjectInputStream {
 
     private final ClassResolver classResolver;

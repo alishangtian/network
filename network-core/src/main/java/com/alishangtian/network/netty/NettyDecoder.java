@@ -10,9 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.StreamCorruptedException;
 
 
-/**
- * @author maoxiaobing
- */
 public class NettyDecoder extends LengthFieldBasedFrameDecoder {
 
     private final ClassResolver classResolver;

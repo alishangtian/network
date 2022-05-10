@@ -1,10 +1,6 @@
 package com.alishangtian.network;
 
-/**
- * @Description RemotingService
- * @Date 2020/6/1 下午8:03
- * @Author maoxiaobing
- **/
+
 public interface RemotingService {
     void start();
 

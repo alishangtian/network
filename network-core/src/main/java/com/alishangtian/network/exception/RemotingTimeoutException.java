@@ -1,12 +1,6 @@
 package com.alishangtian.network.exception;
 
-/** 
- * @Author maoxiaobing
- * @Description
- * @Date 2020/6/2
- * @Param 
- * @Return 
- */
+
 public class RemotingTimeoutException extends RemotingException {
 
     private static final long serialVersionUID = 4106899185095245979L;

@@ -2,13 +2,7 @@ package com.alishangtian.network.config;
 
 import lombok.Data;
 
-/**
- * @Author maoxiaobing
- * @Description
- * @Date 2020/6/2
- * @Param
- * @Return
- */
+
 @Data
 public class NettyClientConfig {
     /**

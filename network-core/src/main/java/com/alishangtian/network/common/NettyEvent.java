@@ -4,13 +4,6 @@ package com.alishangtian.network.common;
 import com.alishangtian.network.netty.NettyEventType;
 import io.netty.channel.Channel;
 
-/**
- * @Author maoxiaobing
- * @Description
- * @Date 2020/6/2
- * @Param
- * @Return
- */
 public class NettyEvent {
     private final NettyEventType type;
     private final String remoteAddr;

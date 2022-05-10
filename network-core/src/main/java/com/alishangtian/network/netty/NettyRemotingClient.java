@@ -39,11 +39,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * @Description NettyRemotingClient
- * @Date 2020/6/1 下午8:02
- * @Author maoxiaobing
- **/
 @Slf4j
 public class NettyRemotingClient extends AbstractNettyRemoting implements RemotingClient {
 

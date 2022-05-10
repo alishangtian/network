@@ -22,11 +22,7 @@ import java.net.SocketAddress;
 import java.util.*;
 import java.util.concurrent.*;
 
-/**
- * @Description NettyRemotingAbstract
- * @Date 2020/6/1 下午8:18
- * @Author maoxiaobing
- **/
+
 @Slf4j
 public abstract class AbstractNettyRemoting {
 
@@ -159,7 +155,7 @@ public abstract class AbstractNettyRemoting {
         final Pair<NettyRequestProcessor, ExecutorService> matched = this.processorTable.get(cmd.getCode());
         final Pair<NettyRequestProcessor, ExecutorService> pair = null == matched ? this.defaultRequestProcessor : matched;
         final long opaque = cmd.getOpaque();
-        log.info("processNetworkCommand opaque:{} requestCode:{}", opaque, cmd.getCode());
+        log.debug("processNetworkCommand opaque:{} requestCode:{}", opaque, cmd.getCode());
         if (pair != null) {
             if (pair.getObject1().rejectRequest()) {
                 final NetworkCommand response = NetworkCommand.builder()

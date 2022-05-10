@@ -5,11 +5,7 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
 import java.io.OutputStream;
 
-/**
- * @Description CompactObjectOutputStream
- * @Date 2020/6/4 上午9:20
- * @Author maoxiaobing
- **/
+
 public class CompactObjectOutputStream extends ObjectOutputStream {
     static final int TYPE_FAT_DESCRIPTOR = 0;
     static final int TYPE_THIN_DESCRIPTOR = 1;

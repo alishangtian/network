@@ -1,16 +1,8 @@
 package com.alishangtian.network.config;
 
-
 import com.alishangtian.network.common.TlsMode;
 import io.netty.handler.ssl.SslContext;
 
-/**
- * @Author maoxiaobing
- * @Description
- * @Date 2020/6/2
- * @Param
- * @Return
- */
 public class TlsSystemConfig {
     public static final String TLS_SERVER_MODE = "tls.server.mode";
     public static final String TLS_ENABLE = "tls.enable";

@@ -1,12 +1,5 @@
 package com.alishangtian.network.netty;
 
-/**
- * @Author maoxiaobing
- * @Description
- * @Date 2020/6/2
- * @Param
- * @Return
- */
 public enum NettyEventType {
     /**
      * 连接

@@ -3,13 +3,6 @@ package com.alishangtian.network.processor;
 import com.alishangtian.network.NetworkCommand;
 import io.netty.channel.Channel;
 
-/**
- * @Author maoxiaobing
- * @Description
- * @Date 2020/6/2
- * @Param
- * @Return
- */
 public class RequestTask implements Runnable {
     private final Runnable runnable;
     private final long createTimestamp = System.currentTimeMillis();

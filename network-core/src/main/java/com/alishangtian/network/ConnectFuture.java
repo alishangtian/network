@@ -8,11 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.concurrent.CountDownLatch;
 
-/**
- * @Desc ConnectFuture
- * @Time 2020/7/22 上午11:33
- * @Author maoxiaobing
- */
 @Data
 @Builder
 @AllArgsConstructor

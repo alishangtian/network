@@ -9,13 +9,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 
-/**
- * @Author maoxiaobing
- * @Description
- * @Date 2020/6/2
- * @Param
- * @Return
- */
+
 public class FileRegionEncoder extends MessageToByteEncoder<FileRegion> {
 
     /**
