@@ -13,6 +13,7 @@
         <module>network-common</module>
         <module>network-server</module>
         <module>network-client</module>
+        <module>network-demo</module>
     </modules>
 
     <parent>
@@ -113,6 +114,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.12.0</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.15</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
